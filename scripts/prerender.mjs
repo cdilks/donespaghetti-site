@@ -26,6 +26,7 @@ for (const [meta, file] of pages) {
     `<meta property="og:title" content="${escape(meta.title)}" />`,
     `<meta property="og:description" content="${escape(meta.description)}" />`,
     `<meta property="og:type" content="website" />`,
+    `<meta property="og:image" content="https://donespaghetti.com/og-image.png" />`,
     meta === routes.notFound
       ? '<meta name="robots" content="noindex" />'
       : `<link rel="canonical" href="${canonical}" /><meta property="og:url" content="${canonical}" />`,

@@ -10,6 +10,10 @@ export const company = {
 export interface App {
   name: string
   summary: string
+  /** Short highlights shown as a checklist on the home page card. */
+  features: string[]
+  /** One-line price note under the download button. */
+  pricing: string
   playUrl: string
   /** Data-related features, listed in the Privacy Policy's "Apps covered" section. */
   dataNotes: string[]
@@ -20,6 +24,12 @@ export const apps: App[] = [
     name: 'ChannelScan – WiFi Analyzer',
     summary:
       'Find dead zones, pick the least crowded WiFi channel, and run speed tests that track your connection over time.',
+    features: [
+      'Channel crowding at a glance',
+      'Speed tests with on-device history',
+      'IP and DNS tools',
+    ],
+    pricing: 'Free, with optional Pro features',
     playUrl:
       'https://play.google.com/store/apps/details?id=com.donespaghetti.wifi_analyzer',
     dataNotes: [
