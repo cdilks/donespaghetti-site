@@ -3,6 +3,7 @@
 Company site for Done Spaghetti LLC: home page, plus the single Privacy Policy and Terms of Service shared by every app we ship.
 
 - **Stack:** Vite + React 19 + TypeScript + React Router, prerendered to static HTML at build time
+- **Design:** the Done Spaghetti design system (sand/clay/walnut/terracotta/slate, Fraunces + DM Sans). Tokens live at the top of `src/index.css` with light and dark values; fonts are self-hosted via `@fontsource` so the CSP stays `font-src 'self'`. The bowl mark is `src/assets/bowl.png`, drawn as a CSS mask so it takes any token color.
 - **Hosting:** Firebase Hosting
 - **CI/CD:** GitHub Actions (`.github/workflows/deploy.yml`)
 

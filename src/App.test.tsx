@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { App } from './App'
-import { company } from './content/site'
+import { apps, company } from './content/site'
 import { render as renderToHtml } from './entry-server'
 
 function renderAt(path: string) {
@@ -22,6 +22,31 @@ describe('routes', () => {
     }
   })
 
+  it('shows each app with its features and price note, plus a contact email', () => {
+    renderAt('/')
+    for (const app of apps) {
+      expect(screen.getByRole('heading', { level: 3, name: app.name })).toBeInTheDocument()
+      for (const feature of app.features) expect(screen.getByText(feature)).toBeInTheDocument()
+      expect(screen.getByText(app.pricing)).toBeInTheDocument()
+    }
+    expect(document.getElementById('apps')).not.toBeNull()
+    expect(document.getElementById('contact')).not.toBeNull()
+    expect(screen.getAllByRole('link', { name: company.email })[0]).toHaveAttribute(
+      'href',
+      `mailto:${company.email}`,
+    )
+  })
+
+  it('header shows the brand name and marks the current legal page', () => {
+    renderAt('/privacy-policy')
+    const nav = screen.getByRole('navigation', { name: 'Main' })
+    expect(screen.getByRole('link', { name: `${company.name} home` })).toHaveTextContent(company.name)
+    expect(nav.querySelector('[aria-current="page"]')).toHaveTextContent('Privacy')
+    for (const name of ['Apps', 'Privacy', 'Terms', 'Contact']) {
+      expect(screen.getByRole('link', { name })).toBeInTheDocument()
+    }
+  })
+
   it.each([
     ['/privacy-policy', 'Privacy Policy'],
     ['/terms-of-service', 'Terms of Service'],
@@ -34,6 +59,7 @@ describe('routes', () => {
   it('renders a not-found page for unknown paths', () => {
     renderAt('/nope')
     expect(screen.getByRole('heading', { level: 1, name: 'Page not found' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Back to home' })).toHaveAttribute('href', '/')
   })
 })
 

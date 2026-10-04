@@ -1,18 +1,4 @@
-export function Logo({ size = 32 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 32 32"
-      aria-hidden="true"
-      className="logo"
-    >
-      <circle cx="16" cy="16" r="15" className="logo-plate" />
-      <path
-        d="M16 7c5 0 8.5 3.6 8.5 8.4 0 4.3-3.2 7.4-7.3 7.4-3.6 0-6.2-2.6-6.2-5.8 0-2.9 2.2-5 5-5 2.4 0 4.1 1.7 4.1 3.9 0 1.9-1.4 3.2-3.2 3.2"
-        className="logo-noodle"
-      />
-      <circle cx="21.5" cy="21.5" r="2.4" className="logo-meatball" />
-    </svg>
-  )
+/** The bowl mark. Drawn as a CSS mask so its ink follows the theme tokens. */
+export function Logo({ tone = 'brand', className = '' }: { tone?: 'brand' | 'walnut' | 'slate'; className?: string }) {
+  return <span aria-hidden="true" className={`logo logo-${tone} ${className}`.trim()} />
 }
