@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://donespaghetti.com/sitemap.xml
