@@ -40,4 +40,4 @@ npm run serve      # serves dist/ via the Firebase Hosting emulator (redirects, 
 - **Pull request:** lint, typecheck, test, and build, then deploy to a Firebase preview channel. The preview URL is posted on the PR and expires after 7 days.
 - **Push to `main`:** same checks, then deploy to the live site.
 
-Requires the repository secret `FIREBASE_SERVICE_ACCOUNT` (service-account JSON with the Firebase Hosting Admin role). The Firebase project ID comes from `.firebaserc`.
+Authentication is keyless: GitHub OIDC → Workload Identity Federation (pool `github`, provider `donespaghetti-site`, restricted to this repo) → service account `github-deploy@donespaghetti.iam.gserviceaccount.com` (Firebase Hosting Admin). No secrets are stored in the repo. Firebase project: `donespaghetti` (see `.firebaserc`).

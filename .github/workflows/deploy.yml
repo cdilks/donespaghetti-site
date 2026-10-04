@@ -9,6 +9,11 @@ on:
 permissions:
   contents: read
 
+# Keyless auth via Workload Identity Federation; these identifiers aren't secrets.
+env:
+  WIF_PROVIDER: projects/1031588266077/locations/global/workloadIdentityPools/github/providers/donespaghetti-site
+  DEPLOY_SERVICE_ACCOUNT: github-deploy@donespaghetti.iam.gserviceaccount.com
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   # Never cancel an in-flight production deploy; superseded PR runs can go.
@@ -39,7 +44,7 @@ jobs:
   preview:
     name: Deploy PR preview
     needs: build
-    # Secrets aren't available to PRs from forks or Dependabot.
+    # Fork and Dependabot PRs can't obtain deploy credentials.
     if: >-
       github.event_name == 'pull_request' &&
       github.event.pull_request.head.repo.full_name == github.repository &&
@@ -48,19 +53,35 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: read
-      checks: write
+      id-token: write
       pull-requests: write
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
       - uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - uses: google-github-actions/auth@v3
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          expires: 7d
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOY_SERVICE_ACCOUNT }}
+      - name: Deploy to preview channel
+        id: preview
+        run: |
+          url=$(npx firebase hosting:channel:deploy "pr-${{ github.event.number }}" \
+            --expires 7d --non-interactive --json | jq -r '.result[].url')
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+      - name: Comment preview URL
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.number }} --edit-last --create-if-none \
+            --body "Preview for ${{ github.event.pull_request.head.sha }}: ${{ steps.preview.outputs.url }} (expires in 7 days)"
 
   deploy:
     name: Deploy to production
@@ -68,16 +89,25 @@ jobs:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
     environment:
       name: production
       url: https://donespaghetti.com
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
       - uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - uses: google-github-actions/auth@v3
         with:
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          channelId: live
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOY_SERVICE_ACCOUNT }}
+      - run: npx firebase deploy --only hosting --non-interactive -m "${{ github.sha }}"
