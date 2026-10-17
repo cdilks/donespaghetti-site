@@ -50,6 +50,7 @@ describe('routes', () => {
   it.each([
     ['/privacy-policy', 'Privacy Policy'],
     ['/terms-of-service', 'Terms of Service'],
+    ['/delete-account', 'Delete your account'],
   ])('%s renders %s with the contact email', (path, heading) => {
     renderAt(path)
     expect(screen.getByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
@@ -64,7 +65,7 @@ describe('routes', () => {
 })
 
 describe('legal content', () => {
-  it.each(['/privacy-policy', '/terms-of-service'])(
+  it.each(['/privacy-policy', '/terms-of-service', '/delete-account'])(
     '%s has no unfilled template placeholders',
     (path) => {
       const html = renderToHtml(path)
@@ -74,7 +75,7 @@ describe('legal content', () => {
   )
 
   it('every in-page table-of-contents link has a target section', () => {
-    for (const path of ['/privacy-policy', '/terms-of-service']) {
+    for (const path of ['/privacy-policy', '/terms-of-service', '/delete-account']) {
       const { container, unmount } = renderAt(path)
       const anchors = container.querySelectorAll<HTMLAnchorElement>('.toc a')
       expect(anchors.length).toBeGreaterThan(0)

@@ -39,6 +39,24 @@ export const apps: App[] = [
       'Shows ads through Google AdMob and offers optional Pro features through Google Play Billing.',
     ],
   },
+  {
+    name: 'Brasa: Focus Timer',
+    summary:
+      'A calm focus timer: work in focused sessions, break gently, and watch your focus history build week by week.',
+    features: [
+      'Focus and break timer that runs in the background',
+      '12-week focus history with streaks',
+      'Optional Google sign-in to back up and sync',
+    ],
+    pricing: 'Free',
+    playUrl: 'https://play.google.com/store/apps/details?id=com.donespaghetti.brasa',
+    dataNotes: [
+      'The timer, your settings, and your focus history work without an account. Signed out, they are stored only on your device.',
+      'Signing in with Google is optional. If you sign in, Firebase Authentication gives us your name, email address, and a user ID, and your focus history (completed sessions per day) and timer settings are stored in Cloud Firestore so they are backed up and match across your devices.',
+      'Signing out removes your synced history and settings from that device; they stay in your account. Deleting your account, in the app or on our account deletion page, removes them from our servers.',
+      'Uses Firebase Crashlytics for crash reports and Google Analytics for Firebase for usage events. Analytics can be turned off in Settings → Share Anonymous Usage Data, and is never linked to your account.',
+    ],
+  },
 ]
 
 export interface RouteMeta {
@@ -64,6 +82,12 @@ export const routes = {
     path: '/terms-of-service',
     title: 'Terms of Service · Done Spaghetti LLC',
     description: 'The terms that apply to every Done Spaghetti LLC app and service.',
+  },
+  deleteAccount: {
+    path: '/delete-account',
+    title: 'Delete your account · Done Spaghetti LLC',
+    description:
+      'How to delete an account in a Done Spaghetti LLC app, and the data that is removed.',
   },
   notFound: {
     path: '/404',

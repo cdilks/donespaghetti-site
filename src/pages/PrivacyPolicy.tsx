@@ -2,7 +2,7 @@ import { Link } from 'react-router'
 import { LegalPage, type LegalSection } from '../components/LegalPage'
 import { apps, company, routes } from '../content/site'
 
-export const PRIVACY_EFFECTIVE_DATE = 'October 4, 2026'
+export const PRIVACY_EFFECTIVE_DATE = 'October 17, 2026'
 
 const mail = <a href={`mailto:${company.email}`}>{company.email}</a>
 
@@ -29,9 +29,11 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          <strong>We do not require accounts.</strong> Our Apps do not ask for your name,
-          email address, phone number, or password. If you email us, we receive your email
-          address and whatever you choose to include in your message.
+          <strong>Accounts are optional.</strong> You never need an account to use an App's
+          core features, and our Apps never ask for a password or phone number. Some Apps
+          offer an optional account, which you create by signing in with Google. If you
+          email us, we receive your email address and whatever you choose to include in your
+          message.
         </p>
         <p>Depending on the App and the features you use, the following information may be processed:</p>
         <ul>
@@ -62,8 +64,17 @@ const sections: LegalSection[] = [
             to us unless a specific feature says otherwise.
           </li>
           <li>
+            <strong>Account information:</strong> if you sign in to an App's optional
+            account with Google, we receive your name, email address, and a user ID from
+            Google. We use them to identify your account and show you which account you are
+            signed in with.
+          </li>
+          <li>
             <strong>Data you create in an App</strong> (for example, saved results or
-            history) is stored on your device. It is not uploaded to our servers.
+            history) is stored on your device. It is not uploaded to our servers unless you
+            sign in to an App's optional account, which backs it up so it can sync across
+            your devices. <a href="#apps">Apps covered by this policy</a> lists what each App
+            backs up.
           </li>
         </ul>
       </>
@@ -90,7 +101,10 @@ const sections: LegalSection[] = [
           <li>
             <strong>Google Analytics for Firebase</strong> (usage analytics),{' '}
             <strong>Firebase Crashlytics</strong> (crash reporting), and{' '}
-            <strong>Firebase Remote Config</strong> (feature settings). See the{' '}
+            <strong>Firebase Remote Config</strong> (feature settings),{' '}
+            <strong>Firebase Authentication</strong> (sign-in with Google for optional
+            accounts), and <strong>Cloud Firestore</strong> (storing data for optional
+            accounts). See the{' '}
             <a href="https://firebase.google.com/support/privacy" rel="noopener">
               Firebase privacy information
             </a>
@@ -136,6 +150,7 @@ const sections: LegalSection[] = [
     body: (
       <ul>
         <li>To provide, maintain, and fix the Apps.</li>
+        <li>To back up your data and keep it in step across your devices when you use an optional account.</li>
         <li>To understand which features are used so we can improve them.</li>
         <li>To show ads that keep our free Apps free, and to measure their performance.</li>
         <li>To unlock and restore purchases.</li>
@@ -179,6 +194,11 @@ const sections: LegalSection[] = [
           Android Settings. Some features may not work without them.
         </li>
         <li>
+          <strong>Accounts:</strong> you can sign out at any time, which removes your synced
+          data from that device, or delete your account in the App or by following{' '}
+          <Link to="/delete-account">Delete your account</Link>.
+        </li>
+        <li>
           <strong>Data on your device:</strong> clearing the App's data or uninstalling the
           App deletes everything the App stored locally.
         </li>
@@ -191,10 +211,16 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          Because our Apps have no accounts, we cannot link analytics or crash data to you
-          by name. That data is kept for the retention periods set by the service providers
-          listed above and is then deleted or aggregated. Emails you send us are kept for as
-          long as needed to respond and for our records.
+          If you use an optional account, your account information and the data the App
+          backs up are kept until you delete your account. Deleting your account in the App
+          removes them from our servers right away. You can also ask us to delete your
+          account by email; see <Link to="/delete-account">Delete your account</Link>.
+        </p>
+        <p>
+          Analytics and crash data are not linked to your account, and we cannot link them
+          to you by name. That data is kept for the retention periods set by the service
+          providers listed above and is then deleted or aggregated. Emails you send us are
+          kept for as long as needed to respond and for our records.
         </p>
         <p>
           To ask us to delete data associated with your device or your correspondence with
@@ -299,8 +325,9 @@ export function PrivacyPolicy() {
       intro={
         <p className="lede">
           This policy explains what information {company.legalName}'s apps and website
-          collect, why, and the choices you have. The short version: no accounts, no selling
-          your data, and anything you create in our apps stays on your device.
+          collect, why, and the choices you have. The short version: accounts are optional, we
+          never sell your data, and anything you create in our apps stays on your device
+          unless you choose to sign in and back it up.
         </p>
       }
       sections={sections}

@@ -15,6 +15,7 @@ const pages = [
   [routes.home, 'index.html'],
   [routes.privacy, 'privacy-policy.html'],
   [routes.terms, 'terms-of-service.html'],
+  [routes.deleteAccount, 'delete-account.html'],
   [routes.notFound, '404.html'],
 ]
 
