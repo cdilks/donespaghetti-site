@@ -14,8 +14,9 @@ Company site for Done Spaghetti LLC: home page, plus the single Privacy Policy a
 | `/` | `src/pages/Home.tsx` |
 | `/privacy-policy` | `src/pages/PrivacyPolicy.tsx` |
 | `/terms-of-service` | `src/pages/TermsOfService.tsx` |
+| `/brasa/delete-account` | `src/pages/BrasaDeleteAccount.tsx` |
 
-`/home`, `/privacy`, and `/terms` 301-redirect to the pages above (see `firebase.json`). Keep `/privacy-policy` and `/terms-of-service` stable: they are linked from Google Play listings.
+`/home`, `/privacy`, and `/terms` 301-redirect to the pages above (see `firebase.json`). Keep `/privacy-policy`, `/terms-of-service`, and `/brasa/delete-account` stable: they are linked from Google Play listings and the Play Console account deletion form.
 
 ## Common changes
 
@@ -34,7 +35,7 @@ npm run build      # outputs dist/ with prerendered HTML per page
 npm run serve      # serves dist/ via the Firebase Hosting emulator (redirects, headers, 404)
 ```
 
-`npm run build` does three things: a client build, an SSR build of `src/entry-server.tsx`, and `scripts/prerender.mjs`, which writes `index.html`, `privacy-policy.html`, `terms-of-service.html`, and `404.html` with full content and per-page `<title>`/meta. The client then hydrates them.
+`npm run build` does three things: a client build, an SSR build of `src/entry-server.tsx`, and `scripts/prerender.mjs`, which writes `index.html`, `privacy-policy.html`, `terms-of-service.html`, `brasa/delete-account.html`, and `404.html` with full content and per-page `<title>`/meta. The client then hydrates them.
 
 ## Deployment
 

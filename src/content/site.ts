@@ -17,6 +17,8 @@ export interface App {
   playUrl: string
   /** Data-related features, listed in the Privacy Policy's "Apps covered" section. */
   dataNotes: string[]
+  /** Page explaining how to delete an account, for Apps with optional sign-in. */
+  deleteAccountPath?: string
 }
 
 export const apps: App[] = [
@@ -38,6 +40,26 @@ export const apps: App[] = [
       'IP & DNS tools can look up your public IP address using ipinfo.io.',
       'Shows ads through Google AdMob and offers optional Pro features through Google Play Billing.',
     ],
+  },
+  {
+    name: 'Brasa',
+    summary:
+      'A calm focus timer that alternates focus sessions with short and long breaks, and tracks your streaks over time.',
+    features: [
+      'Focus and break intervals you can tune',
+      'Live countdown in your notifications',
+      '12-week focus history with streaks',
+    ],
+    pricing: 'Free, no ads',
+    playUrl: 'https://play.google.com/store/apps/details?id=com.donespaghetti.brasa',
+    dataNotes: [
+      'Does not show ads and does not collect the advertising ID.',
+      'Sends crash reports through Firebase Crashlytics (stack trace, device model, OS version, app version, and a random installation ID). Crash reports are kept for 90 days.',
+      'Sends usage analytics through Google Analytics for Firebase, such as a focus session starting, completing, or being skipped, and which screen was opened. Analytics may derive an approximate location from your IP address. You can turn analytics off in Settings → Share anonymous usage data.',
+      'Timer settings and focus history are stored only on your device unless you choose to sign in.',
+      'Optional sign-in with Google, where available in your version of Brasa, backs up and syncs your timer settings and focus history (a count of completed focus sessions per day) through Firebase Authentication and Cloud Firestore. See "If you choose to sign in" above.',
+    ],
+    deleteAccountPath: '/brasa/delete-account',
   },
 ]
 
@@ -64,6 +86,12 @@ export const routes = {
     path: '/terms-of-service',
     title: 'Terms of Service · Done Spaghetti LLC',
     description: 'The terms that apply to every Done Spaghetti LLC app and service.',
+  },
+  brasaDeleteAccount: {
+    path: '/brasa/delete-account',
+    title: 'Delete your Brasa account · Done Spaghetti LLC',
+    description:
+      'How to delete your Brasa account and synced data, in the app or by email request.',
   },
   notFound: {
     path: '/404',

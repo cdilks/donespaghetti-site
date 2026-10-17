@@ -1,6 +1,7 @@
 // Renders each route to static HTML so pages work without JavaScript
 // (Play reviewers, crawlers) and then hydrate on the client.
-import { readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
@@ -15,6 +16,7 @@ const pages = [
   [routes.home, 'index.html'],
   [routes.privacy, 'privacy-policy.html'],
   [routes.terms, 'terms-of-service.html'],
+  [routes.brasaDeleteAccount, 'brasa/delete-account.html'],
   [routes.notFound, '404.html'],
 ]
 
@@ -35,6 +37,7 @@ for (const [meta, file] of pages) {
   const html = template
     .replace('<!--app-head-->', head)
     .replace('<!--app-html-->', render(meta.path))
+  await mkdir(dirname(`${dist}/${file}`), { recursive: true })
   await writeFile(`${dist}/${file}`, html)
   console.log(`prerendered ${meta.path} -> dist/${file}`)
 }

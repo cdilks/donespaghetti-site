@@ -2,7 +2,7 @@ import { Link } from 'react-router'
 import { LegalPage, type LegalSection } from '../components/LegalPage'
 import { apps, company, routes } from '../content/site'
 
-export const PRIVACY_EFFECTIVE_DATE = 'October 4, 2026'
+export const PRIVACY_EFFECTIVE_DATE = 'October 17, 2026'
 
 const mail = <a href={`mailto:${company.email}`}>{company.email}</a>
 
@@ -29,9 +29,12 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          <strong>We do not require accounts.</strong> Our Apps do not ask for your name,
-          email address, phone number, or password. If you email us, we receive your email
-          address and whatever you choose to include in your message.
+          <strong>We do not require accounts.</strong> You can use every App without
+          signing in, and our Apps never ask for your phone number or a password. Some Apps
+          may offer optional sign-in with Google to back up and sync your data; if you
+          choose to sign in, we receive the information described in{' '}
+          <a href="#accounts">If you choose to sign in</a>. If you email us, we receive your
+          email address and whatever you choose to include in your message.
         </p>
         <p>Depending on the App and the features you use, the following information may be processed:</p>
         <ul>
@@ -63,9 +66,51 @@ const sections: LegalSection[] = [
           </li>
           <li>
             <strong>Data you create in an App</strong> (for example, saved results or
-            history) is stored on your device. It is not uploaded to our servers.
+            history) is stored on your device. It is not uploaded to our servers unless you
+            choose to sign in to an App that offers backup and sync, as described below.
           </li>
         </ul>
+      </>
+    ),
+  },
+  {
+    id: 'accounts',
+    title: 'If you choose to sign in',
+    body: (
+      <>
+        <p>
+          Signing in is always optional. If you never sign in, nothing in this section
+          applies to you and your App data stays on your device. Where an App offers
+          sign-in, it uses <strong>Google sign-in through Firebase Authentication</strong>.
+          Today this applies only to Brasa, in versions that include sign-in (see{' '}
+          <a href="#apps">Apps covered by this policy</a>).
+        </p>
+        <p>When you sign in:</p>
+        <ul>
+          <li>
+            <strong>Account information:</strong> Google shares your name, email address,
+            and profile photo with the App so it can show which account you are signed in
+            with. Firebase Authentication keeps your email address and a Firebase user ID
+            to manage your account.
+          </li>
+          <li>
+            <strong>Synced App data:</strong> the App stores your data in Cloud Firestore
+            under your Firebase user ID. For Brasa, that is your timer settings (focus,
+            short break, and long break lengths, sound, haptics, and your analytics
+            choice) and your focus history as a count of completed focus sessions per day.
+          </li>
+        </ul>
+        <p>
+          We use this information only to back up your data, sync it across the devices
+          where you sign in, and manage your account. We do not sell it and do not use it
+          for advertising. It is encrypted in transit.
+        </p>
+        <p>
+          <strong>Signing out</strong> removes the synced data from that device; it stays
+          in your account so you can sign in again later. <strong>Deleting your
+          account</strong> permanently deletes your synced data and your Firebase account.
+          See <a href="#retention">Data retention and deletion</a>.
+        </p>
       </>
     ),
   },
@@ -89,8 +134,10 @@ const sections: LegalSection[] = [
           </li>
           <li>
             <strong>Google Analytics for Firebase</strong> (usage analytics),{' '}
-            <strong>Firebase Crashlytics</strong> (crash reporting), and{' '}
-            <strong>Firebase Remote Config</strong> (feature settings). See the{' '}
+            <strong>Firebase Crashlytics</strong> (crash reporting),{' '}
+            <strong>Firebase Remote Config</strong> (feature settings), and, for optional
+            sign-in, <strong>Firebase Authentication</strong> (Google sign-in) and{' '}
+            <strong>Cloud Firestore</strong> (backup and sync). See the{' '}
             <a href="https://firebase.google.com/support/privacy" rel="noopener">
               Firebase privacy information
             </a>
@@ -139,6 +186,7 @@ const sections: LegalSection[] = [
         <li>To understand which features are used so we can improve them.</li>
         <li>To show ads that keep our free Apps free, and to measure their performance.</li>
         <li>To unlock and restore purchases.</li>
+        <li>If you choose to sign in, to back up and sync your data and manage your account.</li>
         <li>To answer your questions and support requests.</li>
         <li>To comply with the law and protect our rights, our users, and the public.</li>
       </ul>
@@ -182,6 +230,15 @@ const sections: LegalSection[] = [
           <strong>Data on your device:</strong> clearing the App's data or uninstalling the
           App deletes everything the App stored locally.
         </li>
+        <li>
+          <strong>Sign in or out:</strong> where an App offers sign-in, it is optional.
+          Signing out removes synced data from that device and keeps it in your account.
+        </li>
+        <li>
+          <strong>Delete your account:</strong> where an App offers sign-in, you can delete
+          your account and synced data from the App's settings or by request. For Brasa,
+          see <Link to={routes.brasaDeleteAccount.path}>Delete your Brasa account</Link>.
+        </li>
       </ul>
     ),
   },
@@ -191,15 +248,23 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>
-          Because our Apps have no accounts, we cannot link analytics or crash data to you
-          by name. That data is kept for the retention periods set by the service providers
-          listed above and is then deleted or aggregated. Emails you send us are kept for as
-          long as needed to respond and for our records.
+          Analytics and crash data are tied to random app-instance and installation
+          identifiers, not to your name or account. That data is kept for the retention
+          periods set by the service providers listed above and is then deleted or
+          aggregated. Emails you send us are kept for as long as needed to respond and for
+          our records.
         </p>
         <p>
-          To ask us to delete data associated with your device or your correspondence with
-          us, email {mail} with the subject "Data deletion request." Tell us which App you
-          used. We will respond within 30 days.
+          If you choose to sign in, your account and synced App data are kept until you
+          delete your account. You can delete it from the App's settings, or by request if
+          you no longer have the App. Deletion removes your synced data and your Firebase
+          account. For Brasa, see{' '}
+          <Link to={routes.brasaDeleteAccount.path}>Delete your Brasa account</Link>.
+        </p>
+        <p>
+          To ask us to delete data associated with your device, your account, or your
+          correspondence with us, email {mail} with the subject "Data deletion request."
+          Tell us which App you used. We will respond within 30 days.
         </p>
       </>
     ),
@@ -261,6 +326,11 @@ const sections: LegalSection[] = [
               {app.dataNotes.map((note) => (
                 <li key={note}>{note}</li>
               ))}
+              {app.deleteAccountPath && (
+                <li>
+                  <Link to={app.deleteAccountPath}>How to delete your {app.name} account</Link>
+                </li>
+              )}
             </ul>
           </div>
         ))}
@@ -299,8 +369,9 @@ export function PrivacyPolicy() {
       intro={
         <p className="lede">
           This policy explains what information {company.legalName}'s apps and website
-          collect, why, and the choices you have. The short version: no accounts, no selling
-          your data, and anything you create in our apps stays on your device.
+          collect, why, and the choices you have. The short version: accounts are optional, we
+          never sell your data, and anything you create in our apps stays on your device
+          unless you choose to sign in and sync it.
         </p>
       }
       sections={sections}
