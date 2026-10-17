@@ -50,6 +50,7 @@ describe('routes', () => {
   it.each([
     ['/privacy-policy', 'Privacy Policy'],
     ['/terms-of-service', 'Terms of Service'],
+    ['/brasa/delete-account', 'Delete your Brasa account'],
   ])('%s renders %s with the contact email', (path, heading) => {
     renderAt(path)
     expect(screen.getByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
@@ -64,7 +65,27 @@ describe('routes', () => {
 })
 
 describe('legal content', () => {
-  it.each(['/privacy-policy', '/terms-of-service'])(
+  it('Brasa delete-account page offers a prefilled email request route', () => {
+    renderAt('/brasa/delete-account')
+    const request = screen
+      .getAllByRole('link', { name: company.email })
+      .find((a) => a.getAttribute('href')?.includes('subject='))
+    expect(request).toHaveAttribute(
+      'href',
+      `mailto:${company.email}?subject=${encodeURIComponent('Brasa account deletion request')}`,
+    )
+  })
+
+  it('Privacy Policy links each app with sign-in to its account deletion page', () => {
+    renderAt('/privacy-policy')
+    for (const app of apps.filter((a) => a.deleteAccountPath)) {
+      expect(
+        screen.getByRole('link', { name: `How to delete your ${app.name} account` }),
+      ).toHaveAttribute('href', app.deleteAccountPath)
+    }
+  })
+
+  it.each(['/privacy-policy', '/terms-of-service', '/brasa/delete-account'])(
     '%s has no unfilled template placeholders',
     (path) => {
       const html = renderToHtml(path)
@@ -74,7 +95,7 @@ describe('legal content', () => {
   )
 
   it('every in-page table-of-contents link has a target section', () => {
-    for (const path of ['/privacy-policy', '/terms-of-service']) {
+    for (const path of ['/privacy-policy', '/terms-of-service', '/brasa/delete-account']) {
       const { container, unmount } = renderAt(path)
       const anchors = container.querySelectorAll<HTMLAnchorElement>('.toc a')
       expect(anchors.length).toBeGreaterThan(0)

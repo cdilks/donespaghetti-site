@@ -732,11 +732,14 @@ h3 {
 
 .legal p + p,
 .legal p + ul,
-.legal ul + p {
+.legal ul + p,
+.legal p + ol,
+.legal ol + p {
   margin-top: 12px;
 }
 
-.legal ul {
+.legal ul,
+.legal ol {
   margin: 12px 0 0;
   padding-left: 1.25em;
 }
